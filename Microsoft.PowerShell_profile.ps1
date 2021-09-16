@@ -13,14 +13,17 @@ function github() {
     $github_remotes = git remote -v |
     Where-Object { $_ -Like '*(fetch)*' } |
     Select-Object { $_.Split()[1] } |
-    Where-Object { $_ -Like '*github.com/*' } |
+    Where-Object { $_ -Like '*github.com*' } |
     Select-Object -First 1
-    Start-Process ($github_remotes[0].'$_.Split()[1]'.Replace(".git", ""))
+    Start-Process ($github_remotes[0].' $_.Split()[1] '.Replace(".git", ""))
 }
 
 # PowerShell Core7でもConsoleのデフォルトエンコーディングはsjisなので必要
-[System.Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding("utf-8")
-[System.Console]::InputEncoding = [System.Text.Encoding]::GetEncoding("utf-8")
+#[System.Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding("utf-8")
+#[System.Console]::InputEncoding = [System.Text.Encoding]::GetEncoding("utf-8")
 
 # git logなどのマルチバイト文字を表示させるため (絵文字含む)
 $env:LESSCHARSET = "utf-8"
+
+Function yarn-cmd { Set-Location -Path C:\Windows\System32 }
+Set-Alias -Name jyarn -Value "C:\Program Files\nodejs\yarn.ps1"
